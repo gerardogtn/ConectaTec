@@ -15,8 +15,11 @@ class GameState:
 
     def generateSuccessor(agent, action):
         """ Generates the successor for the given action """
-        # TODO
-        pass
+        successor = GameState(board[:], self.width, self.height)
+        for i,pos in enumerate(board[action]):
+            if pos != 0:
+                successor.board[action][i-1] = agent
+        return successor
 
 class MiniMax:
     def __init__(self, agent):
