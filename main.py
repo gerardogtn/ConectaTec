@@ -19,6 +19,8 @@ class GameState:
         pass
 
 class MiniMax:
+    def __init__(self, agent):
+        self.agent = agent
 
     def maxValue(gameState, depth, agent, alpha, beta):
         if self.terminal(gameState, depth):
@@ -76,7 +78,13 @@ class MiniMax:
 
 
     def evaluate(gameState):
-        pass # TODO
+        """ Returns the 'score' for the given state """
+        if checkAnyT(self.agent):
+            return 10
+        else if checkAnyT(self.getNextAgent(self.agent)):
+            return -10
+        else
+            return 0
 
     def terminal(gameState, depth):
-        return depth > 4 or not gameState.getLegalActions(agent)
+        return depth > 4 or not gameState.getLegalActions(agent) or checkAnyT(1) or checkAnyT(2)
