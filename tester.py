@@ -10,7 +10,7 @@ class ConsoleTester:
   def run(self, board):
     print("Running")
     from judge import printGame
-    v = int(raw_input("Choose the column [0-6]: "))
+    v = int(input("Choose the column [0-6]: "))
     print("Selected: ", v)
     return v
 
@@ -25,4 +25,5 @@ class MiniMaxTester:
     return self.minmax.maxValue(gameState, 1, self.agent, float("-inf"), float("inf"))
 
 if __name__ == '__main__':
-  main()
+    from judge import main 
+    main()

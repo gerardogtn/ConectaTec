@@ -66,9 +66,9 @@ def printGame():
         for y in range(0,width):
             #if(board[x][y] == 0):
              #   print (" ")
-            print board[y][x],
-        print "\n"
-    print "\n"
+            print (board[y][x], end=" ")
+        print ("\n")
+    print ("\n")
             
 def checkAnyT(player_number):
     global board, width, height
@@ -162,11 +162,11 @@ def main():
             break;
         
     #Game is a tie
-    if(gameFinished(turn) == -1): print "The game is a tie!"
-    elif not(loser == 0): print "The loser is ", turn
+    if(gameFinished(turn) == -1): print ("The game is a tie!")
+    elif not(loser == 0): print ("The loser is ", turn)
     else: 
         printGame()
-        print "The winner is ", turn
+        print ("The winner is ", turn)
         
     
 if __name__ == '__main__':
