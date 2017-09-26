@@ -34,10 +34,7 @@ def minValue(gameState,depth,agent,alpha,beta):
 
     for action in gameState.getLegalActions(agent):
         successor = gameState.generateSuccessor(agent, action)
-        if nextAgent == index:
-            minimum = min(minimum,maxValue(successor,depth+1,nextAgent,alpha,beta))
-        else:
-            minimum = min(minimum,minValue(successor,depth,nextAgent,alpha,beta))
+        minimum = min(minimum,maxValue(successor,depth+1,nextAgent,alpha,beta))
 
         if minimum < alpha:
             return minimum
