@@ -8,7 +8,7 @@ class GameState:
     def getLegalActions(agent):
         """ Return an iterable representing the legal actions to take. """
         for indx in range(0, 6):
-            
+
         pass
 
     def generateSuccessor(agent, action):
@@ -77,4 +77,4 @@ class MiniMax:
         pass # TODO
 
     def terminal(gameState, depth):
-        pass # TODO
+        return depth > 4 or not gameState.getLegalActions(agent)
