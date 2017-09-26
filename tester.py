@@ -27,9 +27,5 @@ class MiniMaxTester:
     return opt
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-    from judge import main 
+    from judge import main
     main()
-=======
-  main()
->>>>>>> e25cece19d10bfc62b669490f9170e8c4b84563f

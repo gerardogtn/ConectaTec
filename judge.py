@@ -66,17 +66,10 @@ def printGame():
         for y in range(0,width):
             #if(board[x][y] == 0):
              #   print (" ")
-<<<<<<< HEAD
             print (board[y][x], end=" ")
         print ("\n")
     print ("\n")
-            
-=======
-            print board[y][x],
-        print "\n"
-    print "\n"
 
->>>>>>> e25cece19d10bfc62b669490f9170e8c4b84563f
 def checkAnyT(player_number):
     global board, width, height
     for r in range(0,width):
@@ -169,22 +162,12 @@ def main():
             break;
 
     #Game is a tie
-<<<<<<< HEAD
     if(gameFinished(turn) == -1): print ("The game is a tie!")
     elif not(loser == 0): print ("The loser is ", turn)
-    else: 
-        printGame()
-        print ("The winner is ", turn)
-        
-    
-=======
-    if(gameFinished(turn) == -1): print "The game is a tie!"
-    elif not(loser == 0): print "The loser is ", turn
     else:
         printGame()
-        print "The winner is ", turn
+        print ("The winner is ", turn)
 
 
->>>>>>> e25cece19d10bfc62b669490f9170e8c4b84563f
 if __name__ == '__main__':
    main()
