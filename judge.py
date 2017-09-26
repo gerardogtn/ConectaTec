@@ -62,13 +62,11 @@ def gameFinished(player_number):
 #Function for printing the game board
 def printGame():
     global board, width, height
-    for x in range(height-1,-1, -1):
-        for y in range(0,width):
-            #if(board[x][y] == 0):
-             #   print (" ")
+    for x in range(height - 1, -1, -1):
+        for y in range(width):
             print (board[y][x], end=" ")
-        print ("\n")
-    print ("\n")
+        print ("")
+    print ("")
 
 def checkAnyT(player_number):
     global board, width, height

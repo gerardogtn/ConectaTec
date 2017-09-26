@@ -1,24 +1,41 @@
-
+import copy
 class GameState:
 
     def __init__(self, board):
-        self.board = board
+        self.board = copy.deepcopy(board)
 
     def getLegalActions(self, agent):
         """ Return an iterable representing the legal actions to take. """
         actions = []
-        for indx in range(0, 6):
-            if self.board[indx][0] == 0:
-                actions.append(indx)
+        for i in range(0, 7):
+            if self.board[i][-1] == 0:
+                actions.append(i)
         return actions
 
     def generateSuccessor(self, agent, action):
-        """ Generates the successor for the given action """
-        successor = GameState(self.board[:])
-        for i,pos in enumerate(self.board[action]):
-            if pos != 0 or i == len(self.board[action]):
-                successor.board[action][i-1] = agent
+        """ Generates the successor for the given action
+
+        Keyword arguments:
+        action -- The column in which to add the disk.
+
+        """
+        successor = GameState(self.board)
+        rows = successor.board[action]
+
+        for i, row in enumerate(rows):
+            if row == 0:
+                successor.board[action][i] = agent
+                break
         return successor
+
+    def mprint(self):
+        height = len(self.board[0])
+        width = len(self.board)
+        for x in range(height - 1, -1, -1):
+            for y in range(width):
+                print (self.board[y][x], end=" ")
+            print ("")
+        print ("")
 
 class MiniMax:
     def __init__(self, agent):
@@ -27,7 +44,6 @@ class MiniMax:
     def maxValue(self, gameState, depth, agent, alpha, beta):
         if self.terminal(gameState, depth):
             ev = self.evaluate(gameState)
-            print(ev)
             return ev
 
         maximum = float("-inf")
@@ -101,14 +117,14 @@ class MiniMax:
         """ Returns the 'score' for the given state """
 
         if self.checkAnyT(gameState.board,self.agent):
-            return 10
+            return 1000
         elif self.checkAnyT(gameState.board,self.getNextAgent(self.agent)):
             return -10
         else:
             return 0
 
     def terminal(self, gameState, depth):
-        return depth > 1 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
+        return depth > 2 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
 
 
 def checkWinBelow(board, width, height,col, row, player_number):
