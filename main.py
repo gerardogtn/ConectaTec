@@ -1,8 +1,9 @@
 import copy
 class GameState:
 
-    def __init__(self, board):
-        self.board = copy.deepcopy(board)
+    def __init__(self, board, stack):
+        self.board = board
+        self.stack = stack
 
     def getLegalActions(self, agent):
         """ Return an iterable representing the legal actions to take. """
@@ -25,6 +26,7 @@ class GameState:
         for i, row in enumerate(rows):
             if row == 0:
                 successor.board[action][i] = agent
+                self.stack.append((action,i))
                 break
         return successor
 
@@ -61,6 +63,7 @@ class MiniMax:
                 return maximum
 
             alpha = max(alpha, maximum)
+
 
         if depth == 1:
             return maxAction
@@ -117,14 +120,14 @@ class MiniMax:
         """ Returns the 'score' for the given state """
 
         if self.checkAnyT(gameState.board,self.agent):
-            return 1000
+            return 10
         elif self.checkAnyT(gameState.board,self.getNextAgent(self.agent)):
             return -10
         else:
             return 0
 
     def terminal(self, gameState, depth):
-        return depth > 2 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
+        return depth > 3 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
 
 
 def checkWinBelow(board, width, height,col, row, player_number):
