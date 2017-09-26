@@ -26,7 +26,9 @@ class MiniMax:
 
     def maxValue(self, gameState, depth, agent, alpha, beta):
         if self.terminal(gameState, depth):
-            return self.evaluate(gameState)
+            ev = self.evaluate(gameState)
+            print(ev)
+            return ev
 
         maximum = float("-inf")
         nextAgent = self.getNextAgent(agent)
@@ -78,17 +80,73 @@ class MiniMax:
         else:
             return 1
 
+    def checkAnyT(self,board,player_number):
+        width = len(board)
+        height = len(board[0])
+        for r in range(0,width):
+            for c in range(0,height):
+                if(board[r][c] == player_number):
+                    if(checkWinBelow(board, width, height, c, r, player_number)
+                    or checkWinAbove(board, width, height, c, r, player_number)
+                    or checkLeft(board, width, height, c, r, player_number)
+                    or checkRight(board, width, height, c, r, player_number)
+                    or checkWinBottomRight(board, width, height, c, r, player_number)
+                    or checkWinBottomLeft(board, width, height, c, r, player_number)
+                    or checkWinTopLeft(board, width, height, c, r, player_number)
+                    or checkWinTopRight(board, width, height, c, r, player_number)):
+                        return True
+        return False
 
     def evaluate(self, gameState):
         """ Returns the 'score' for the given state """
-        from judge import checkAnyT
-        if checkAnyT(self.agent):
+
+        if self.checkAnyT(gameState.board,self.agent):
             return 10
-        elif checkAnyT(self.getNextAgent(self.agent)):
+        elif self.checkAnyT(gameState.board,self.getNextAgent(self.agent)):
             return -10
         else:
             return 0
 
     def terminal(self, gameState, depth):
-        from judge import checkAnyT
-        return depth > 4 or not gameState.getLegalActions(self.agent) or checkAnyT(1) or checkAnyT(2)
+        return depth > 1 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
+
+
+def checkWinBelow(board, width, height,col, row, player_number):
+    if(col+1 == height or row == 0 or row+1 == width): return False
+    if(board[row-1][col+1] == player_number and board[row][col+1] == player_number and board[row+1][col+1] == player_number): return True
+    return False
+
+def checkWinAbove(board, width, height,col, row, player_number):
+    if(col == 0 or row == 0 or row+1 == width): return False
+    if(board[row-1][col-1] == player_number and board[row][col-1] == player_number and board[row+1][col-1] == player_number): return True
+    return False
+
+def checkLeft(board, width, height,col, row, player_number):
+    if(row + 1 >= width or col + 1 >= height or col - 1 < 0 ): return False
+    if(board[row+1][col-1] == board[row+1][col] == board[row+1][col+1] == player_number): return True
+    return False
+
+def checkRight(board, width, height,col, row, player_number):
+    if(row - 1 < 0 or col + 1 >= height or col - 1 < 0 ): return False
+    if(board[row-1][col-1] == board[row-1][col] == board[row-1][col+1] == player_number): return True
+    return False
+
+def checkWinBottomRight(board, width, height,col, row, player_number):
+    if(row - 2 < 0 or col + 2 >= height): return False
+    if(board[row-2][col] == player_number and board[row-1][col+1] == player_number and board[row][col+2] == player_number): return True
+    return False
+
+def checkWinBottomLeft(board, width, height,col, row, player_number):
+    if(row + 2 >= width or col - 2 < 0): return False
+    if(board[row+2][col] == player_number and board[row+1][col-1] == player_number and board[row][col-2] == player_number): return True
+    return False
+
+def checkWinTopLeft(board, width, height,col, row, player_number):
+    if(row + 2 >= width or col - 2 < 0): return False
+    if(board[row+2][col] == player_number and board[row+1][col-1] == player_number and board[row][col-2] == player_number): return True
+    return False
+
+def checkWinTopRight(board, width, height,col, row, player_number):
+    if(row - 2 < 0 or col - 2 < 0): return False
+    if(board[row-2][col] == player_number and board[row-1][col-1] == player_number and board[row][col-2] == player_number): return True
+    return False

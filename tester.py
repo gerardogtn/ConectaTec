@@ -14,7 +14,7 @@ class ConsoleTester:
     print("Selected: ", v)
     return v
 
-class MiniMaxTester: 
+class MiniMaxTester:
 
   def __init__(self, agent):
     self.minmax = MiniMax(agent)
@@ -22,8 +22,14 @@ class MiniMaxTester:
 
   def run(self, board):
     gameState = GameState(board)
-    return self.minmax.maxValue(gameState, 1, self.agent, float("-inf"), float("inf"))
+    opt = self.minmax.maxValue(gameState, 1, self.agent, float("-inf"), float("inf"))
+    # print(opt)
+    return opt
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     from judge import main 
     main()
+=======
+  main()
+>>>>>>> e25cece19d10bfc62b669490f9170e8c4b84563f
