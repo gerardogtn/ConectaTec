@@ -9,11 +9,11 @@ class GameState:
         pass
 
     def generateSuccessor(agent, action):
-        """ Generates the successor for the given action """ 
+        """ Generates the successor for the given action """
         # TODO
-        pass    
+        pass
 
-class MiniMax: 
+class MiniMax:
 
     def maxValue(gameState, depth, agent, alpha, beta):
         if self.terminal(gameState, depth):
@@ -60,9 +60,9 @@ class MiniMax:
         return minimum
 
     def getNextAgent(agent):
-        """ Returns the agent representing the other player. 
+        """ Returns the agent representing the other player.
 
-        ASSUMES: agent is either 1 or 2. 
+        ASSUMES: agent is either 1 or 2.
         """
         if agent == 1:
             return 2
@@ -74,6 +74,5 @@ class MiniMax:
         pass # TODO
 
     def terminal(gameState, depth):
-        pass # TODO
-
-
+        return depth > 4 or not gameState.getLegalActions(agent)
+        
