@@ -7,9 +7,11 @@ class GameState:
 
     def getLegalActions(agent):
         """ Return an iterable representing the legal actions to take. """
+        actions = []
         for indx in range(0, 6):
-
-        pass
+            if self.board[indx, 0] == 0
+                actions.append(indx)
+        return actions
 
     def generateSuccessor(agent, action):
         """ Generates the successor for the given action """
