@@ -1,19 +1,22 @@
 class GameState:
 
-    def __init__(self, board):
+    def __init__(self, board, width, height):
         self.board = board
+        self.width = width
+        self.height = height
 
     def getLegalActions(agent):
         """ Return an iterable representing the legal actions to take. """
-        # TODO
+        for indx in range(0, 6):
+            
         pass
 
     def generateSuccessor(agent, action):
-        """ Generates the successor for the given action """ 
+        """ Generates the successor for the given action """
         # TODO
-        pass    
+        pass
 
-class MiniMax: 
+class MiniMax:
 
     def maxValue(gameState, depth, agent, alpha, beta):
         if self.terminal(gameState, depth):
@@ -60,9 +63,9 @@ class MiniMax:
         return minimum
 
     def getNextAgent(agent):
-        """ Returns the agent representing the other player. 
+        """ Returns the agent representing the other player.
 
-        ASSUMES: agent is either 1 or 2. 
+        ASSUMES: agent is either 1 or 2.
         """
         if agent == 1:
             return 2
@@ -75,5 +78,3 @@ class MiniMax:
 
     def terminal(gameState, depth):
         pass # TODO
-
-
