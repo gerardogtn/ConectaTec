@@ -32,14 +32,14 @@ def place(row, player_number):
     return -1
 
 # Function used to check whether game has finished or not
-# Return values: 
+# Return values:
     # -1 -> game tie
     # 0  -> game continues
     # 1  -> game won by player_number
-    
+
 # Possible t's:
 
-#   010     111     10      01      100     001     101     101   
+#   010     111     10      01      100     001     101     101
 #   111     010     11      11      010     010     010     010
 #                   10      01      101     101     001     100
 
@@ -50,13 +50,13 @@ def gameFinished(player_number):
         if(board[pos][height-1] == 0):
             available_moves = True
             break;
- 
+
     if(checkAnyT(player_number)):
         return 1
-       
-    if(not available_moves): 
+
+    if(not available_moves):
         return -1
-        
+
     return 0
 
 #Function for printing the game board
@@ -69,7 +69,7 @@ def printGame():
             print board[y][x],
         print "\n"
     print "\n"
-            
+
 def checkAnyT(player_number):
     global board, width, height
     for r in range(0,width):
@@ -82,10 +82,10 @@ def checkAnyT(player_number):
                 or checkWinBottomRight(c, r, player_number)
                 or checkWinBottomLeft(c, r, player_number)
                 or checkWinTopLeft(c, r, player_number)
-                or checkWinTopRight(c, r, player_number)):                    
+                or checkWinTopRight(c, r, player_number)):
                     return True
     return False
-    
+
 def checkWinBelow(col, row, player_number):
     global board, width, height
     if(col+1 == height or row == 0 or row+1 == width): return False
@@ -97,19 +97,19 @@ def checkWinAbove(col, row, player_number):
     if(col == 0 or row == 0 or row+1 == width): return False
     if(board[row-1][col-1] == player_number and board[row][col-1] == player_number and board[row+1][col-1] == player_number): return True
     return False
-    
+
 def checkLeft(col, row, player_number):
     global board, width, height
     if(row + 1 >= width or col + 1 >= height or col - 1 < 0 ): return False
     if(board[row+1][col-1] == board[row+1][col] == board[row+1][col+1] == player_number): return True
     return False
-    
+
 def checkRight(col, row, player_number):
     global board, width, height
     if(row - 1 < 0 or col + 1 >= height or col - 1 < 0 ): return False
     if(board[row-1][col-1] == board[row-1][col] == board[row-1][col+1] == player_number): return True
     return False
-    
+
 def checkWinBottomRight(col, row, player_number):
     global board, width, height
     if(row - 2 < 0 or col + 2 >= height): return False
@@ -121,13 +121,13 @@ def checkWinBottomLeft(col, row, player_number):
     if(row + 2 >= width or col - 2 < 0): return False
     if(board[row+2][col] == player_number and board[row+1][col-1] == player_number and board[row][col-2] == player_number): return True
     return False
-    
+
 def checkWinTopLeft(col, row, player_number):
     global board, width, height
     if(row + 2 >= width or col - 2 < 0): return False
     if(board[row+2][col] == player_number and board[row+1][col-1] == player_number and board[row][col-2] == player_number): return True
     return False
-    
+
 def checkWinTopRight(col, row, player_number):
     global board, width, height
     if(row - 2 < 0 or col - 2 < 0): return False
@@ -141,8 +141,8 @@ def intelligentFunction1(turn, board):
     return consoletester.run(board)
 
 def intelligentFunction2(turn, board):
-    global consoletester
-    return consoletester.run(board)
+    global minmaxtester
+    return minmaxtester.run(board)
 
 def main():
     global board
@@ -160,14 +160,14 @@ def main():
         if (place(row,turn) == -1):
             loser = turn
             break;
-        
+
     #Game is a tie
     if(gameFinished(turn) == -1): print "The game is a tie!"
     elif not(loser == 0): print "The loser is ", turn
-    else: 
+    else:
         printGame()
         print "The winner is ", turn
-        
-    
+
+
 if __name__ == '__main__':
    main()
