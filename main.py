@@ -1,6 +1,6 @@
 import copy
 class GameState:
-
+    stack = []
     def __init__(self, board):
         self.board = copy.deepcopy(board)
 
