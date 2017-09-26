@@ -1,44 +1,79 @@
-def maxValue(gameState,depth,agent,alpha,beta):
-    if terminal(gameState,depth):
-        return evaluate(gameState)
+class GameState:
 
-    maximum = float("-inf")
-    nextAgent = getNextAgent(gameState,agent)
+    def __init__(self, board):
+        self.board = board
 
-    for action in gameState.getLegalActions(agent):
-        successor = gameState.generateSuccessor(agent, action)
-        value = minValue(successor,depth,nextAgent,alpha,beta)
+    def getLegalActions(agent):
+        """ Return an iterable representing the legal actions to take. """
+        # TODO
+        pass
 
-        if maximum < value:
-            maximum = value
-            maxAction = action
+    def generateSuccessor(agent, action):
+        """ Generates the successor for the given action """ 
+        # TODO
+        pass    
 
-        if maximum > beta:
+class MiniMax: 
+
+    def maxValue(gameState, depth, agent, alpha, beta):
+        if self.terminal(gameState, depth):
+            return self.evaluate(gameState)
+
+        maximum = float("-inf")
+        nextAgent = self.getNextAgent(gameState, agent)
+
+        for action in gameState.getLegalActions(agent):
+            successor = gameState.generateSuccessor(agent, action)
+            value = self.minValue(successor, depth, nextAgent, alpha, beta)
+
+            if maximum < value:
+                maximum = value
+                maxAction = action
+
+            if maximum > beta:
+                return maximum
+
+            alpha = max(alpha, maximum)
+
+        if depth == 1:
+            return maxAction
+        else:
             return maximum
 
-        alpha = max(alpha, maximum)
 
-    if depth == 1:
-        return maxAction
-    else:
-        return maximum
+    def minValue(gameState, depth, agent, alpha, beta):
+        if self.terminal(gameState,depth):
+            return self.evaluate(gameState)
+
+        minimum = float("inf")
+        nextAgent = self.getNextAgent(agent)
+
+        for action in gameState.getLegalActions(agent):
+            successor = gameState.generateSuccessor(agent, action)
+            minimum = min(minimum,maxValue(successor, depth + 1, nextAgent, alpha, beta))
+
+            if minimum < alpha:
+                return minimum
+
+            beta = min(beta, minimum)
+
+        return minimum
+
+    def getNextAgent(agent):
+        """ Returns the agent representing the other player. 
+
+        ASSUMES: agent is either 1 or 2. 
+        """
+        if agent == 1:
+            return 2
+        else:
+            return 1
 
 
-def minValue(gameState,depth,agent,alpha,beta):
-    if terminal(gameState,depth):
-        return evaluate(gameState)
+    def evaluate(gameState):
+        pass # TODO
 
-    minimum = float("inf")
-    nextAgent = getNextAgent(gameState,agent)
+    def terminal(gameState, depth):
+        pass # TODO
 
 
-    for action in gameState.getLegalActions(agent):
-        successor = gameState.generateSuccessor(agent, action)
-        minimum = min(minimum,maxValue(successor,depth+1,nextAgent,alpha,beta))
-
-        if minimum < alpha:
-            return minimum
-
-        beta = min(beta, minimum)
-
-    return minimum
