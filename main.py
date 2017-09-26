@@ -1,9 +1,7 @@
 class GameState:
 
-    def __init__(self, board, width, height):
+    def __init__(self, board):
         self.board = board
-        self.width = width
-        self.height = height
 
     def getLegalActions(agent):
         """ Return an iterable representing the legal actions to take. """
@@ -15,9 +13,9 @@ class GameState:
 
     def generateSuccessor(agent, action):
         """ Generates the successor for the given action """
-        successor = GameState(board[:], self.width, self.height)
+        successor = GameState(board[:])
         for i,pos in enumerate(board[action]):
-            if pos != 0:
+            if pos != 0 or i == len(board[action]):
                 successor.board[action][i-1] = agent
         return successor
 
