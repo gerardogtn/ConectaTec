@@ -1,6 +1,7 @@
 import random
 from tester import ConsoleTester
 from tester import MiniMaxTester
+from tester import MiniMaxTester2
 
 width, height = 7, 6
 
@@ -132,15 +133,15 @@ def checkWinTopRight(col, row, player_number):
     if(board[row-2][col] == player_number and board[row-1][col-1] == player_number and board[row][col-2] == player_number): return True
     return False
 
-consoletester = ConsoleTester(1)
-minmaxtester = MiniMaxTester(2)
+tester1 = ConsoleTester(1)
+tester2 = MiniMaxTester2(2)
 def intelligentFunction1(turn, board):
-    global consoletester
-    return consoletester.run(board)
+    global tester1
+    return tester1.run(board)
 
 def intelligentFunction2(turn, board):
-    global minmaxtester
-    return minmaxtester.run(board)
+    global tester2
+    return tester2.run(board)
 
 def main():
     global board
@@ -149,15 +150,15 @@ def main():
     while(gameFinished(turn) == 0):
         printGame()
         if(turn == 1):
-            turn = 2
-        else: turn = 1
-        if(turn == 1):
             row = intelligentFunction1(turn, board)
         if(turn == 2):
             row = intelligentFunction2(turn, board)
         if (place(row,turn) == -1):
             loser = turn
             break;
+        if(turn == 1):
+            turn = 2
+        else: turn = 1
 
     #Game is a tie
     if(gameFinished(turn) == -1): print ("The game is a tie!")

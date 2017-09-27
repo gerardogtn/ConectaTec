@@ -1,9 +1,10 @@
 import copy
 class GameState:
+    stack = []
 
     def __init__(self, board, stack):
         self.board = board
-        self.stack = stack
+
 
     def getLegalActions(self, agent):
         """ Return an iterable representing the legal actions to take. """
@@ -14,7 +15,7 @@ class GameState:
         return actions
 
     def degenerateSuccessor(self):
-        x,y = self.stack.pop()
+        x,y = GameState.stack.pop()
         self.board[x][y] = 0
 
     def generateSuccessor(self, agent, action):
@@ -30,7 +31,7 @@ class GameState:
         for i, row in enumerate(rows):
             if row == 0:
                 self.board[action][i] = agent
-                self.stack.append((action,i))
+                GameState.stack.append((action,i))
                 break
 
     def mprint(self):
@@ -59,6 +60,7 @@ class MiniMax:
             # print(gameState.stack)
             # gameState.mprint()
             value = self.minValue(gameState, depth, nextAgent, alpha, beta)
+            gameState.degenerateSuccessor()
 
             if maximum < value:
                 maximum = value
@@ -68,7 +70,7 @@ class MiniMax:
                 return maximum
 
             alpha = max(alpha, maximum)
-            gameState.degenerateSuccessor()
+
 
         if depth == 1:
             return maxAction
@@ -86,12 +88,13 @@ class MiniMax:
         for action in gameState.getLegalActions(agent):
             gameState.generateSuccessor(agent, action)
             minimum = min(minimum, self.maxValue(gameState, depth + 1, nextAgent, alpha, beta))
+            gameState.degenerateSuccessor()
 
             if minimum < alpha:
                 return minimum
 
             beta = min(beta, minimum)
-            gameState.degenerateSuccessor()
+
 
         return minimum
 
@@ -125,15 +128,58 @@ class MiniMax:
     def evaluate(self, gameState, depth):
         """ Returns the 'score' for the given state """
 
+
         if self.checkAnyT(gameState.board,self.agent):
-            return 10 - depth
+            return 100 - depth
         elif self.checkAnyT(gameState.board,self.getNextAgent(self.agent)):
-            return -10
+            return -100 + depth
         else:
             return 0
 
     def terminal(self, gameState, depth):
-        return depth > 5 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
+        return depth > 3 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
+
+
+class MiniMax2(MiniMax):
+    def evaluate(self, gameState, depth):
+        """ Returns the 'score' for the given state """
+        total = 0
+        #
+        # count = 0
+        # for column in gameState.board:
+        #     for state in column:
+        #         if state != 0:
+        #             count += 1
+        # total -= count
+
+        total += self.numberoflines(gameState)
+        if self.checkAnyT(gameState.board,self.agent):
+            total += 100
+        elif self.checkAnyT(gameState.board,self.getNextAgent(self.agent)):
+            total -= 100
+
+        return total
+
+    def numberoflines(self, gameState):
+        row, col = GameState.stack[-1]
+        current = gameState.board[row][col]
+        lines = 0
+        if row - 1 >= 0 and row + 1 < len(gameState.board) and gameState.board[row - 1][col] in [current, 0]:
+            if (gameState.board[row + 1][col] in [current, 0]):
+                lines += 1
+        if col - 1 >= 0 and col + 1 < len(gameState.board[0]) and gameState.board[row][col - 1] in [current, 0]:
+            if (gameState.board[row][col + 1] in [current, 0]):
+                lines += 1
+        if row - 1 >= 0 and col + 1 < len(gameState.board[0]) and gameState.board[row - 1][col] in [current, 0]:
+            if (gameState.board[row][col + 1] in [current, 0]):
+                lines += 1
+        if col - 1 >= 0 and row + 1 < len(gameState.board) and gameState.board[row][col - 1] in [current, 0]:
+            if (gameState.board[row + 1][col] in [current, 0]):
+                lines += 1
+        # print("Lines: ", lines)
+        return lines
+
+
 
 
 def checkWinBelow(board, width, height,col, row, player_number):

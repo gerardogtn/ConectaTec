@@ -1,5 +1,6 @@
 
 from main import MiniMax
+from main import MiniMax2
 from main import GameState
 import copy
 
@@ -24,9 +25,17 @@ class MiniMaxTester:
   def run(self, board):
     gameState = GameState(copy.deepcopy(board),[])
     opt = self.minmax.maxValue(gameState, 1, self.agent, float("-inf"), float("inf"))
-    # print(opt)
+    print(len(GameState.stack))
     return opt
 
-if __name__ == '__main__':
-    from judge import main
-    main()
+class MiniMaxTester2:
+
+  def __init__(self, agent):
+    self.minmax = MiniMax2(agent)
+    self.agent = agent
+
+  def run(self, board):
+    gameState = GameState(copy.deepcopy(board),[])
+    opt = self.minmax.maxValue(gameState, 1, self.agent, float("-inf"), float("inf"))
+    print(len(GameState.stack))
+    return opt
