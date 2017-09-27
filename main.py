@@ -2,7 +2,15 @@ import copy
 class GameState:
     stack = []
     def __init__(self, board):
-        self.board = copy.deepcopy(board)
+        self.board = board
+
+    def addLast(self, last):
+        GameState.stack.append(last)
+
+    def deleteLast(self):
+        if len(GameState.stack) != 0:
+            last = GameState.stack.pop()
+            self.board[last[0]][last[1]] = 0
 
     def getLegalActions(self, agent):
         """ Return an iterable representing the legal actions to take. """
@@ -19,12 +27,13 @@ class GameState:
         action -- The column in which to add the disk.
 
         """
+
         successor = GameState(self.board)
         rows = successor.board[action]
-
         for i, row in enumerate(rows):
             if row == 0:
                 successor.board[action][i] = agent
+                self.addLast((action, i))
                 break
         return successor
 
@@ -43,15 +52,23 @@ class MiniMax:
 
     def maxValue(self, gameState, depth, agent, alpha, beta):
         if self.terminal(gameState, depth):
-            ev = self.evaluate(gameState)
+            ev = self.evaluate(gameState, depth)
             return ev
 
         maximum = float("-inf")
         nextAgent = self.getNextAgent(agent)
 
         for action in gameState.getLegalActions(agent):
+            #print("Before:")
+            #gameState.mprint()
             successor = gameState.generateSuccessor(agent, action)
+            #print("Successor:")
+            #successor.mprint()
+            #gameState.mprint()
             value = self.minValue(successor, depth, nextAgent, alpha, beta)
+            gameState.deleteLast()
+            #print("After:")
+            #gameState.mprint()
 
             if maximum < value:
                 maximum = value
@@ -70,7 +87,7 @@ class MiniMax:
 
     def minValue(self, gameState, depth, agent, alpha, beta):
         if self.terminal(gameState,depth):
-            return self.evaluate(gameState)
+            return self.evaluate(gameState, depth)
 
         minimum = float("inf")
         nextAgent = self.getNextAgent(agent)
@@ -78,7 +95,7 @@ class MiniMax:
         for action in gameState.getLegalActions(agent):
             successor = gameState.generateSuccessor(agent, action)
             minimum = min(minimum, self.maxValue(successor, depth + 1, nextAgent, alpha, beta))
-
+            gameState.deleteLast()
             if minimum < alpha:
                 return minimum
 
@@ -113,18 +130,22 @@ class MiniMax:
                         return True
         return False
 
-    def evaluate(self, gameState):
+    def evaluate(self, gameState, depth):
         """ Returns the 'score' for the given state """
 
         if self.checkAnyT(gameState.board,self.agent):
-            return 1000
+            print(str(1000-depth))
+            gameState.mprint()
+            return 1000-depth
         elif self.checkAnyT(gameState.board,self.getNextAgent(self.agent)):
-            return -10
+            print(str(-100+depth))
+            gameState.mprint()
+            return -100+depth
         else:
             return 0
 
     def terminal(self, gameState, depth):
-        return depth > 2 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
+        return depth > 3 or not gameState.getLegalActions(self.agent) or self.checkAnyT(gameState.board,1) or self.checkAnyT(gameState.board,2)
 
 
 def checkWinBelow(board, width, height,col, row, player_number):

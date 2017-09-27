@@ -23,7 +23,7 @@ class MiniMaxTester:
   def run(self, board):
     gameState = GameState(board)
     opt = self.minmax.maxValue(gameState, 1, self.agent, float("-inf"), float("inf"))
-    # print(opt)
+    print("PC played: " + str(opt))
     return opt
 
 if __name__ == '__main__':
