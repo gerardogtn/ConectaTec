@@ -1,12 +1,13 @@
 import time
 from Minmax import Board
+from Minmax import MinMax
 width, height = 7, 6
 board = [[0 for y in range(height)]for x in range (width)]
 
-board[6][0] = 1
-board[5][1] = 1
-board[4][2] = 1
-board[6][2] = 1
+board[2][0] = 1
+board[3][0] = 1
+board[4][0] = 1
+board[3][1] = 1
 
 def printGame():
     global board, width, height

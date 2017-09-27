@@ -2,6 +2,7 @@ import random
 from tester import ConsoleTester
 from tester import MiniMaxTester
 from tester import RandomTester
+from tester import MinMaxTester
 
 width, height = 7, 6
 
@@ -147,6 +148,8 @@ consoletester = ConsoleTester(1)
 minmaxtester1 = MiniMaxTester(1)
 randomtester = RandomTester(1)
 minmaxtester = MiniMaxTester(2)
+
+minmax2tester = MinMaxTester(2)
 def intelligentFunction1(turn, board):
     global consoletester
     return consoletester.run(board)
@@ -156,8 +159,8 @@ def intelligentFunction1(turn, board):
     #return randomtester.run(board)
 
 def intelligentFunction2(turn, board):
-    global minmaxtester
-    return minmaxtester.run(board)
+    global minmax2tester
+    return minmax2tester.run(board, turn)
 
 def main():
     global board
