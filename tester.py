@@ -1,6 +1,7 @@
 
 from main import MiniMax
 from main import GameState
+import copy
 
 class ConsoleTester:
 
@@ -21,7 +22,7 @@ class MiniMaxTester:
     self.agent = agent
 
   def run(self, board):
-    gameState = GameState(board)
+    gameState = GameState(copy.deepcopy(board),[])
     opt = self.minmax.maxValue(gameState, 1, self.agent, float("-inf"), float("inf"))
     # print(opt)
     return opt
