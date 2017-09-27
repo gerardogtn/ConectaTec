@@ -1,16 +1,16 @@
 import copy
 class GameState:
-    stack = []
+    #stack = []
     def __init__(self, board):
         self.board = board
 
-    def addLast(self, last):
-        GameState.stack.append(last)
+    #def addLast(self, last):
+        #GameState.stack.append(last)
 
-    def deleteLast(self):
-        if len(GameState.stack) != 0:
-            last = GameState.stack.pop()
-            self.board[last[0]][last[1]] = 0
+    #def deleteLast(self):
+        #if len(GameState.stack) != 0:
+            #last = GameState.stack.pop()
+            #self.board[last[0]][last[1]] = 0
 
     def getLegalActions(self, agent):
         """ Return an iterable representing the legal actions to take. """
@@ -22,27 +22,33 @@ class GameState:
 
     def generateSuccessor(self, agent, action):
         """ Generates the successor for the given action
-
         Keyword arguments:
         action -- The column in which to add the disk.
-
         """
-
-        successor = GameState(self.board)
-        rows = successor.board[action]
+        rows = self.board[action]
         for i, row in enumerate(rows):
             if row == 0:
-                successor.board[action][i] = agent
-                self.addLast((action, i))
+                self.board[action][i] = agent
+                #self.addLast((action, i))
                 break
-        return successor
+        return self
+
+    def removeTopCoin(self, col):
+        rows = self.board[col]
+        for i in range(len(self.board[0]) - 1, -1, -1):
+            if self.board[col][i] != 0:
+                self.board[col][i] = 0
+                return
 
     def mprint(self):
         height = len(self.board[0])
         width = len(self.board)
         for x in range(height - 1, -1, -1):
             for y in range(width):
-                print (self.board[y][x], end=" ")
+                if self.board[y][x] == 0:
+                    print("", end="  ")
+                else:
+                    print (self.board[y][x], end=" ")
             print ("")
         print ("")
 
@@ -59,16 +65,10 @@ class MiniMax:
         nextAgent = self.getNextAgent(agent)
 
         for action in gameState.getLegalActions(agent):
-            #print("Before:")
-            #gameState.mprint()
             successor = gameState.generateSuccessor(agent, action)
-            #print("Successor:")
-            #successor.mprint()
-            #gameState.mprint()
             value = self.minValue(successor, depth, nextAgent, alpha, beta)
-            gameState.deleteLast()
-            #print("After:")
-            #gameState.mprint()
+            #gameState.deleteLast()
+            gameState.removeTopCoin(action)
 
             if maximum < value:
                 maximum = value
@@ -95,7 +95,9 @@ class MiniMax:
         for action in gameState.getLegalActions(agent):
             successor = gameState.generateSuccessor(agent, action)
             minimum = min(minimum, self.maxValue(successor, depth + 1, nextAgent, alpha, beta))
-            gameState.deleteLast()
+            #gameState.deleteLast()
+            gameState.removeTopCoin(action)
+
             if minimum < alpha:
                 return minimum
 
@@ -134,12 +136,13 @@ class MiniMax:
         """ Returns the 'score' for the given state """
 
         if self.checkAnyT(gameState.board,self.agent):
-            print(str(1000-depth))
-            gameState.mprint()
+            #print(str(1000-depth))
+            #gameState.mprint()
             return 1000-depth
         elif self.checkAnyT(gameState.board,self.getNextAgent(self.agent)):
-            print(str(-100+depth))
-            gameState.mprint()
+            #if depth==1:
+                #print(str(-100+depth))
+                #gameState.mprint()
             return -100+depth
         else:
             return 0

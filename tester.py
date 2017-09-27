@@ -1,4 +1,4 @@
-
+import random
 from main import MiniMax
 from main import GameState
 
@@ -13,6 +13,13 @@ class ConsoleTester:
     v = int(input("Choose the column [0-6]: "))
     print("Selected: ", v)
     return v
+
+class RandomTester:
+    def __init__(self, agent):
+        self.agent = agent
+
+    def run(self, board):
+        return random.randint(0,6)
 
 class MiniMaxTester:
 
