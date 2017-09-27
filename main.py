@@ -1,16 +1,7 @@
 import copy
 class GameState:
-    #stack = []
     def __init__(self, board):
         self.board = board
-
-    #def addLast(self, last):
-        #GameState.stack.append(last)
-
-    #def deleteLast(self):
-        #if len(GameState.stack) != 0:
-            #last = GameState.stack.pop()
-            #self.board[last[0]][last[1]] = 0
 
     def getLegalActions(self, agent):
         """ Return an iterable representing the legal actions to take. """
@@ -29,7 +20,6 @@ class GameState:
         for i, row in enumerate(rows):
             if row == 0:
                 self.board[action][i] = agent
-                #self.addLast((action, i))
                 break
         return self
 
@@ -51,7 +41,7 @@ class GameState:
                     print (self.board[y][x], end=" ")
             print ("")
         print ("")
-
+ 
 class MiniMax:
     def __init__(self, agent):
         self.agent = agent
@@ -134,7 +124,6 @@ class MiniMax:
 
     def evaluate(self, gameState, depth):
         """ Returns the 'score' for the given state """
-
         if self.checkAnyT(gameState.board,self.agent):
             #print(str(1000-depth))
             #gameState.mprint()
