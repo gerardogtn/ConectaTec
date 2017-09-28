@@ -3,15 +3,30 @@ from gamestate import *
 from conecta_tec import *
 
 class MiniMaxPlayer(Player):
-  def __init__(self, _id, width, height):
+  def __init__(self, _id, width, height, depth):
     Player.__init__(self, _id)
-    DEPTH = 5
-    self.minimax = ConectaTecMiniMax(DEPTH, _id, 2 if _id == 1 else 1)
+    self.minimax = ConectaTecMiniMax(depth, _id, 2 if _id == 1 else 1)
     self.width = width
     self.height = height
 
   def play(self, board):
     state = ConectaTecGameState(self.width, self.height, board)
+    return self.minimax.run(state)
+
+class DynamicMiniMaxPlayer(Player):
+  def __init__(self, _id, width, height):
+    Player.__init__(self, _id)
+    DEPTH = 4
+    self.minimax = ConectaTecMiniMax(DEPTH, _id, 2 if _id == 1 else 1)
+    self.turn = _id - 1
+    self.width = width
+    self.height = height
+
+  def play(self, board):
+    state = ConectaTecGameState(self.width, self.height, board)
+    self.turn += 2
+    if (self.turn in [3, 4]): self.minimax.MAX_DEPTH += 1
+    if (self.turn in [15, 16]): self.minimax.MAX_DEPTH += 1
     return self.minimax.run(state)
 
 class ConsolePlayer(Player):
@@ -27,12 +42,12 @@ class MiConectaTec(ConectaTec):
     ConectaTec.__init__(self, width, height)
 
   def getPlayerOne(self, id):
-    #return MiniMaxPlayer(id, self.width, self.height)
-    return ConsolePlayer(id)
+    return MiniMaxPlayer(id, self.width, self.height, 5)
+    #return ConsolePlayer(id)
 
   def getPlayerTwo(self, id):
-    return MiniMaxPlayer(id, self.width, self.height)
-    #return ConsolePlayer(id)
+    return MiniMaxPlayer(id, self.width, self.height, 6)
+    # return ConsolePlayer(id)
 
 def main():
   WIDTH = 7

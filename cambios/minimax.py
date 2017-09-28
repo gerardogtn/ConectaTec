@@ -56,10 +56,10 @@ class ConectaTecMiniMax(BoundedMiniMax):
     self.opponent = opponent
 
   def evaluate(self, state, depth):
+    total = 0
     if (state.board.won(self.id)):
-      return 100 - depth
+      total += 100 - depth
     elif (state.board.won(self.opponent)):
-      return -100 + depth
-    else:
-      val = state.board.score(depth, self.id, self.opponent)
-      return val
+      total += -100 + depth
+    total += state.board.score(depth, self.id, self.opponent)
+    return total
