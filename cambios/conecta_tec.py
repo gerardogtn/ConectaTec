@@ -112,6 +112,9 @@ class ConectaTecBoard:
     for c in range(self.WIDTH):
       print("_", end=" ")
     print("")
+    for c in range(self.WIDTH):
+      print(str(c+1), end=" ")
+    print("")
   def mapChar(self, inpt):
     if inpt == 0:
       return " "
