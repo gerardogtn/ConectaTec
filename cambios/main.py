@@ -20,7 +20,7 @@ class ConsolePlayer(Player):
 
   def play(self, board):
     v = int(input("Select the column [1-7]: "))
-    return v - 1 
+    return v - 1
 
 class MiConectaTec(ConectaTec):
   def __init__(self, width, height):
