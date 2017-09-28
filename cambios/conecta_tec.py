@@ -99,7 +99,7 @@ class ConectaTecBoard:
   def remove(self, column, player):
     for i in range(self.HEIGHT):
       if self.board[column][self.HEIGHT - i - 1] != 0:
-        self.board[column][self.HEIGHT - i - 1] == 0
+        self.board[column][self.HEIGHT - i - 1] = 0
         break
 
   def printGame(self):
