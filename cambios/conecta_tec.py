@@ -1,5 +1,6 @@
-class Player:
+import time
 
+class Player:
   def __init__(self, id):
     self.id = id
 
@@ -106,8 +107,18 @@ class ConectaTecBoard:
     print("\n")
     for r in range(self.HEIGHT):
       for c in range(self.WIDTH):
-        print(self.board[c][self.HEIGHT - r - 1], end= " ")
+        print(self.mapChar(self.board[c][self.HEIGHT - r - 1]), end= " ")
       print("")
+    for c in range(self.WIDTH):
+      print("_", end=" ")
+    print("")
+  def mapChar(self, inpt):
+    if inpt == 0:
+      return " "
+    elif inpt == 1:
+      return "X"
+    elif inpt == 2:
+      return "O"
 
   def isGameOver(self):
     return self.won(1) or self.won(2) or self.isTie()
@@ -321,13 +332,21 @@ class ConectaTec:
     while True:
       from copy import deepcopy
       board = deepcopy(self.board.board)
-      self.board.place(playerOne.play(board), playerOne.id)
+      start = time.time()
+      val = playerOne.play(board)
+      end = time.time()
+      print("Time taken: " + str(end - start) + "s")
+      self.board.place(val, playerOne.id)
       if (self.isGameOver()):
         break
       self.board.printGame()
 
       board = deepcopy(self.board.board)
-      self.board.place(playerTwo.play(board), playerTwo.id)
+      start = time.time()
+      val = playerTwo.play(board)
+      end = time.time()
+      print("Time taken: " + str(end - start) + "s")
+      self.board.place(val, playerTwo.id)
       if (self.isGameOver()):
         break
       self.board.printGame()

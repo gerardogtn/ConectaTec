@@ -5,7 +5,7 @@ from conecta_tec import *
 class MiniMaxPlayer(Player):
   def __init__(self, _id, width, height):
     Player.__init__(self, _id)
-    DEPTH = 4
+    DEPTH = 5
     self.minimax = ConectaTecMiniMax(DEPTH, _id, 2 if _id == 1 else 1)
     self.width = width
     self.height = height
@@ -30,6 +30,7 @@ class MiConectaTec(ConectaTec):
     return MiniMaxPlayer(id, self.width, self.height)
 
   def getPlayerTwo(self, id):
+    #return MiniMaxPlayer(id, self.width, self.height)
     return ConsolePlayer(id)
 
 def main():
