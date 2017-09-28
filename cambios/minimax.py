@@ -36,7 +36,7 @@ class BoundedMiniMax:
     """
     nextAction = None
     nextScore = float("-inf")
-    for action, state in originalState.getActionSuccessors(id):
+    for action, state in originalState.getActionSuccessors(self.id):
       # Since the opponent is the minimizer, and we are making one move already
       # minmax should be called assuming that is the opponents (minimizer) turn.
       score = self.minimax(state, 1, True)

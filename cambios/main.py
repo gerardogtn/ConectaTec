@@ -3,10 +3,10 @@ from gamestate import *
 from conecta_tec import *
 
 class MiniMaxPlayer(Player):
-  def __init__(self, id, width, height):
-    Player.__init__(self, id)
-    DEPTH = 7
-    self.minimax = ConectaTecMiniMax(DEPTH, id, 2 if id == 1 else 1)
+  def __init__(self, _id, width, height):
+    Player.__init__(self, _id)
+    DEPTH = 2
+    self.minimax = ConectaTecMiniMax(DEPTH, _id, 2 if _id == 1 else 1)
     self.width = width
     self.height = height
 

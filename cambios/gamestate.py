@@ -15,9 +15,9 @@ class GameState:
     Returns: 
       [
         (0, ['x', 'b', 'b', 'b']),
-        (0, ['b', 'x', 'b', 'b']),
-        (0, ['b', 'b', 'x', 'b']),
-        (0, ['b', 'b', 'b', 'x'])
+        (1, ['b', 'x', 'b', 'b']),
+        (2, ['b', 'b', 'x', 'b']),
+        (3, ['b', 'b', 'b', 'x'])
       ]
 
     Of course, any subclass would need to know if the successor is being filled with
@@ -41,12 +41,12 @@ class ConectaTecGameState(GameState):
   def isTerminal(self):
     return self.board.isGameOver()
 
-  def getActionSuccessors(self, id):
+  def getActionSuccessors(self, _id):
     for i in range(7):
       if self.board.canPlace(i):
-        self.board.place(i, id)
+        self.board.place(i, _id)
         yield (i, self)
-        self.board.remove(i, id)
+        self.board.remove(i, _id)
 
 
 
