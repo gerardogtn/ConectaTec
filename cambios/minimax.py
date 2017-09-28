@@ -8,7 +8,7 @@ class BoundedMiniMax:
     self.opponent = opponent
 
   def successorsScores(self, state, currentDepth, isMinimizer):
-    """ Returns the score of each state in states. 
+    """ Returns the score of each state in states.
 
     The 'score' is the result of evaluate() in each state.
     """
@@ -31,7 +31,7 @@ class BoundedMiniMax:
   def run(self, originalState):
     """ Call this method to run minmax on the given state.
 
-    Returns: 
+    Returns:
     The next action to be taken. (I.e. the next move to play.)
     """
     nextAction = None
@@ -46,7 +46,7 @@ class BoundedMiniMax:
     return nextAction
 
   def evaluate(self, state, depth):
-    pass 
+    pass
 
 class ConectaTecMiniMax(BoundedMiniMax):
 
@@ -61,4 +61,5 @@ class ConectaTecMiniMax(BoundedMiniMax):
     elif (state.board.won(self.opponent)):
       return -100 + depth
     else:
-      return 0
+      val = state.board.score(depth, self.id, self.opponent)
+      return val

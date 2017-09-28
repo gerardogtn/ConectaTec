@@ -5,7 +5,7 @@ from conecta_tec import *
 class MiniMaxPlayer(Player):
   def __init__(self, _id, width, height):
     Player.__init__(self, _id)
-    DEPTH = 2
+    DEPTH = 4
     self.minimax = ConectaTecMiniMax(DEPTH, _id, 2 if _id == 1 else 1)
     self.width = width
     self.height = height
@@ -20,7 +20,7 @@ class ConsolePlayer(Player):
 
   def play(self, board):
     v = int(input("Select the column [1-7]: "))
-    return v - 1 
+    return v - 1
 
 class MiConectaTec(ConectaTec):
   def __init__(self, width, height):

@@ -26,11 +26,11 @@ class TChecker:
   def checkHorizontal(self, c, r):
     down = False
     up = False
-    if (c > 1 and r > 0): 
+    if (c > 1 and r > 0):
       down = self.board[c - 2][r] == self.id and self.board[c - 1][r] == self.id and self.board[c][r] == self.id \
-        and self.board[c - 1][r - 1] == self.id 
+        and self.board[c - 1][r - 1] == self.id
 
-    if (c > 1 and r < self.HEIGHT - 1): 
+    if (c > 1 and r < self.HEIGHT - 1):
       up = self.board[c - 2][r] == self.id and self.board[c - 1][r] == self.id and self.board[c][r] == self.id \
         and self.board[c - 1][r + 1] == self.id
     return down or up
@@ -38,7 +38,7 @@ class TChecker:
   def checkVertical(self, c, r):
     """
     x o o
-    x x o 
+    x x o
     t o o
 
     """
@@ -79,7 +79,7 @@ class TChecker:
 
 
 
-class ConectaTecBoard: 
+class ConectaTecBoard:
 
   def __init__(self, width, height):
     self.WIDTH = width
@@ -103,11 +103,11 @@ class ConectaTecBoard:
         break
 
   def printGame(self):
+    print("\n")
     for r in range(self.HEIGHT):
       for c in range(self.WIDTH):
         print(self.board[c][self.HEIGHT - r - 1], end= " ")
       print("")
-    print("")
 
   def isGameOver(self):
     return self.won(1) or self.won(2) or self.isTie()
@@ -115,6 +115,172 @@ class ConectaTecBoard:
   def won(self, id):
     tchecker = TChecker(id, self.board, self.WIDTH, self.HEIGHT)
     return tchecker.check()
+
+  def score(self, depth, agent, aa):
+    #antiagent
+    scoreS = 0
+    scoreN = 0
+    scoreE = 0
+    scoreW = 0
+    scoreNW = 0
+    scoreNE = 0
+    scoreSW = 0
+    scoreSE = 0
+    #check South
+    for x in range(0, 5):
+      for y in range (0,5):
+        if (self.board[x][y] == aa or self.board[x+1][y] == aa or self.board[x+2][y] == aa or self.board[x+1][y+1] == aa):
+          continue
+        t = 0
+        if self.board[x][y] == agent:
+          t += 1
+        if self.board[x+1][y] == agent:
+          t += 1
+        if self.board[x+2][y] == agent:
+          t += 1
+        if self.board[x+1][y+1] == agent:
+          t += 1
+        #t -= depth
+        if t < 0:
+          t = 0
+        scoreS += t
+
+    # check North (this is the T)
+    for x in range(0,5):
+      for y in range (1,6):
+        if (self.board[x][y] == aa or self.board[x+1][y] == aa or self.board[x+2][y] == aa or self.board[x+1][y-1] == aa):
+          continue
+        t = 0
+        if self.board[x][y] == agent:
+          t += 1
+        if self.board[x+1][y] == agent:
+          t += 1
+        if self.board[x+2][y] == agent:
+          t += 1
+        if self.board[x+1][y-1] == agent:
+          t += 1
+        #t -= depth
+        if t < 0:
+          t = 0
+        scoreN += t
+
+    # check West
+    for x in range(0,6):
+      for y in range (0,4):
+        if (self.board[x][y] == aa or self.board[x][y+1] == aa or self.board[x][y+2] == aa or self.board[x+1][y+1] == aa):
+          continue
+        t = 0
+        if self.board[x][y] == agent:
+          t += 1
+        if self.board[x][y+1] == agent:
+          t += 1
+        if self.board[x][y+2] == agent:
+          t += 1
+        if self.board[x+1][y+1] == agent:
+          t += 1
+        #t -= depth
+        if t < 0:
+          t = 0
+        scoreW += t
+
+    # check East
+    for x in range(1,7):
+      for y in range (0,4):
+        if (self.board[x][y] == aa or self.board[x][y+1] == aa or self.board[x][y+2] == aa or self.board[x-1][y+1] == aa):
+          continue
+        t = 0
+        if self.board[x][y] == agent:
+          t += 1
+        if self.board[x][y+1] == agent:
+          t += 1
+        if self.board[x][y+2] == agent:
+          t += 1
+        if self.board[x-1][y+1] == agent:
+          t += 1
+        #t -= depth
+        if t < 0:
+          t = 0
+        scoreE += t
+
+    # check NW
+    for x in range(0,5):
+      for y in range (0,4):
+        if (self.board[x][y] == aa or self.board[x+1][y+1] == aa or self.board[x+2][y+2] == aa or self.board[x+2][y] == aa):
+          continue
+        t = 0
+        if self.board[x][y] == agent:
+          t += 1
+        if self.board[x+1][y+1] == agent:
+          t += 1
+        if self.board[x+2][y+2] == agent:
+          t += 1
+        if self.board[x+2][y] == agent:
+          t += 1
+        #t -= depth
+        if t < 0:
+          t = 0
+        scoreNW += t
+
+    # check NE
+    for x in range(0,5):
+      for y in range (0,4):
+        if (self.board[x][y] == aa or self.board[x][y+2] == aa or self.board[x+1][y+1] == aa or self.board[x+2][y] == aa):
+          continue
+        t = 0
+        if self.board[x][y] == agent:
+          t += 1
+        if self.board[x][y+2] == agent:
+          t += 1
+        if self.board[x+1][y+1] == agent:
+          t += 1
+        if self.board[x+2][y] == agent:
+          t += 1
+        #t -= depth
+        if t < 0:
+          t = 0
+        scoreNE += t
+
+    # check SW
+    for x in range(0,5):
+      for y in range (2,6):
+        if (self.board[x][y] == aa or self.board[x+1][y-1] == aa or self.board[x+2][y-2] == aa or self.board[x+2][y] == aa):
+          continue
+        t = 0
+        if self.board[x][y] == agent:
+          t += 1
+        if self.board[x+1][y-1] == agent:
+          t += 1
+        if self.board[x+2][y-2] == agent:
+          t += 1
+        if self.board[x+2][y] == agent:
+          t += 1
+        #t -= depth
+        if t < 0:
+          t = 0
+        scoreSW += t
+
+    # check SE
+    for x in range(0,5):
+      for y in range (0,4):
+        if (self.board[x][y] == aa or self.board[x+1][y+1] == aa or self.board[x+2][y+2] == aa or self.board[x][y+2] == aa):
+          continue
+        t = 0
+        if self.board[x][y] == agent:
+          t += 1
+        if self.board[x+1][y+1] == agent:
+          t += 1
+        if self.board[x+2][y+2] == agent:
+          t += 1
+        if self.board[x][y+2] == agent:
+          t += 1
+        #t -= depth
+        if t < 0:
+          t = 0
+        scoreSE += t
+    score = scoreN + scoreS + scoreE + scoreW + scoreNW + scoreNE + scoreSW + scoreSE
+    #self.printGame()
+    #print("Score: " + str(score))
+    return score
 
   def isTie(self):
     for col in self.board:
