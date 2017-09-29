@@ -97,6 +97,13 @@ class ConectaTecBoard:
   def canPlace(self, column):
     return self.board[column][-1] == 0
 
+  def isEmpty(self, column):
+    for i in self.board:
+      for c in i:
+        if c != 0:
+          return False
+    return True
+
   def remove(self, column, player):
     for i in range(self.HEIGHT):
       if self.board[column][self.HEIGHT - i - 1] != 0:
@@ -113,7 +120,7 @@ class ConectaTecBoard:
       print("_", end=" ")
     print("")
     for c in range(self.WIDTH):
-      print(str(c+1), end=" ")
+      print(str(c), end=" ")
     print("")
   def mapChar(self, inpt):
     if inpt == 0:
@@ -140,6 +147,7 @@ class ConectaTecBoard:
     scoreNE = 0
     scoreSW = 0
     scoreSE = 0
+
     #check South
     for x in range(0, 5):
       for y in range (0,5):
@@ -173,7 +181,6 @@ class ConectaTecBoard:
           t += 1
         if self.board[x+1][y-1] == agent:
           t += 1
-        #t -= depth
         if t < 0:
           t = 0
         scoreN += t
@@ -192,7 +199,6 @@ class ConectaTecBoard:
           t += 1
         if self.board[x+1][y+1] == agent:
           t += 1
-        #t -= depth
         if t < 0:
           t = 0
         scoreW += t
@@ -211,7 +217,6 @@ class ConectaTecBoard:
           t += 1
         if self.board[x-1][y+1] == agent:
           t += 1
-        #t -= depth
         if t < 0:
           t = 0
         scoreE += t
@@ -249,7 +254,6 @@ class ConectaTecBoard:
           t += 1
         if self.board[x+2][y] == agent:
           t += 1
-        #t -= depth
         if t < 0:
           t = 0
         scoreNE += t
@@ -268,7 +272,6 @@ class ConectaTecBoard:
           t += 1
         if self.board[x+2][y] == agent:
           t += 1
-        #t -= depth
         if t < 0:
           t = 0
         scoreSW += t
@@ -287,13 +290,11 @@ class ConectaTecBoard:
           t += 1
         if self.board[x][y+2] == agent:
           t += 1
-        #t -= depth
         if t < 0:
           t = 0
         scoreSE += t
     score = scoreN + scoreS + scoreE + scoreW + scoreNW + scoreNE + scoreSW + scoreSE
-    #self.printGame()
-    #print("Score: " + str(score))
+
     return score
 
   def isTie(self):
@@ -328,30 +329,26 @@ class ConectaTec:
     else:
       print("Its a tie !!")
 
+  def playerPlay(self, player):
+    from copy import deepcopy
+    board = deepcopy(self.board.board)
+
+    self.board.printGame()
+    startTime = time.time()
+    selectedColumn = player.play(board)
+    endTime = time.time()
+    print("Time taken: " + str(endTime - startTime) + "s")
+    self.board.place(selectedColumn, player.id)
+
+    return self.isGameOver()
+
+
   def play(self):
     playerOne = self.getPlayerOne(1)
     playerTwo = self.getPlayerTwo(2)
 
-    while True:
-      from copy import deepcopy
-      board = deepcopy(self.board.board)
-      start = time.time()
-      val = playerOne.play(board)
-      end = time.time()
-      print("Time taken: " + str(end - start) + "s")
-      self.board.place(val, playerOne.id)
-      if (self.isGameOver()):
-        break
-      self.board.printGame()
+    while not (self.playerPlay(playerOne) or self.playerPlay(playerTwo)):
+      pass
 
-      board = deepcopy(self.board.board)
-      start = time.time()
-      val = playerTwo.play(board)
-      end = time.time()
-      print("Time taken: " + str(end - start) + "s")
-      self.board.place(val, playerTwo.id)
-      if (self.isGameOver()):
-        break
-      self.board.printGame()
     self.board.printGame()
     self.onGameOver()

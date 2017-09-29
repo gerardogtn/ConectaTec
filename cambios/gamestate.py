@@ -42,11 +42,19 @@ class ConectaTecGameState(GameState):
     return self.board.isGameOver()
 
   def getActionSuccessors(self, _id):
-    for i in range(7):
+    for i in [3, 4, 2, 1, 5, 6, 0]:
       if self.board.canPlace(i):
         self.board.place(i, _id)
         yield (i, self)
         self.board.remove(i, _id)
+
+  def size(self):
+    acc = 0
+    for i in self.board.board: 
+      for e in i:
+        if e != 0:
+          acc += 1
+    return acc
 
 
 
