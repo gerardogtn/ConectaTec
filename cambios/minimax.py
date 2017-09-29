@@ -49,13 +49,30 @@ class BoundedMiniMax:
     pass
 
 class ConectaTecMiniMax(BoundedMiniMax):
-
+  hist = {}
   def __init__(self, MAX_DEPTH, id, opponent):
     BoundedMiniMax.__init__(self, MAX_DEPTH, id, opponent)
     self.id = id
     self.opponent = opponent
 
   def evaluate(self, state, depth):
+    boardStr = state.board.toString()
+    #print(boardStr)
+    if boardStr in ConectaTecMiniMax.hist:
+      #print("Recovered")
+      return ConectaTecMiniMax.hist[boardStr]
+    else:
+      #print("Calculated")
+      total = 0
+      if (state.board.won(self.id)):
+        total += 100 - depth
+      elif (state.board.won(self.opponent)):
+        total += -100 + depth
+      total += state.board.score(depth, self.id, self.opponent)
+      ConectaTecMiniMax.hist[boardStr] = total
+      return total
+
+  def evaluate2(self, state, depth):
     total = 0
     if (state.board.won(self.id)):
       total += 100 - depth

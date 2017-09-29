@@ -42,12 +42,12 @@ class MiConectaTec(ConectaTec):
     ConectaTec.__init__(self, width, height)
 
   def getPlayerOne(self, id):
-    return MiniMaxPlayer(id, self.width, self.height, 5)
+    return MiniMaxPlayer(id, self.width, self.height, 6)
     #return ConsolePlayer(id)
 
   def getPlayerTwo(self, id):
-    return MiniMaxPlayer(id, self.width, self.height, 6)
-    # return ConsolePlayer(id)
+    #return MiniMaxPlayer(id, self.width, self.height, 6)
+    return ConsolePlayer(id)
 
 def main():
   WIDTH = 7

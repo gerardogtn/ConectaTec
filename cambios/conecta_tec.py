@@ -123,6 +123,13 @@ class ConectaTecBoard:
     elif inpt == 2:
       return "O"
 
+  def toString(self):
+      out = ""
+      for r in range(self.HEIGHT):
+        for c in range(self.WIDTH):
+          out += str(self.board[c][self.HEIGHT - r - 1])
+      return out
+
   def isGameOver(self):
     return self.won(1) or self.won(2) or self.isTie()
 
