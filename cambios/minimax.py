@@ -41,11 +41,12 @@ class BoundedMiniMax:
       # Since the opponent is the minimizer, and we are making one move already
       # minmax should be called assuming that is the opponents (minimizer) turn.
       score = self.minimax(state, 1, True)
-      print(score, end=" ")
+      #print(score, end=" ")
       if (score > nextScore):
         nextScore = score
         nextAction = action
-    print("")
+    #print("")
+    print("PC played: " + str(nextAction))
     return nextAction
 
   def evaluate(self, state, depth):

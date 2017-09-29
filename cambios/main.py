@@ -35,20 +35,24 @@ class ConsolePlayer(Player):
     Player.__init__(self, id)
 
   def play(self, board):
-    v = int(input("Select the column [1-7]: "))
-    return v - 1
+    v = int(input("Select the column [0-6]: "))
+    return v
 
 class MiConectaTec(ConectaTec):
   def __init__(self, width, height):
     ConectaTec.__init__(self, width, height)
 
   def getPlayerOne(self, id):
-    return MiniMaxPlayer(id, self.width, self.height, 5)
-    return ConsolePlayer(id)
+    if player_starts:
+      return MiniMaxPlayer(id, self.width, self.height, 5)
+    else:
+      return ConsolePlayer(id)
 
   def getPlayerTwo(self, id):
-    return MiniMaxPlayer(id, self.width, self.height, 5)
-    return ConsolePlayer(id)
+    if player_starts:
+      return ConsolePlayer(id)
+    else:
+      return MiniMaxPlayer(id, self.width, self.height, 5)
 
 def main():
   WIDTH = 7
@@ -57,8 +61,13 @@ def main():
   conectaTec = MiConectaTec(WIDTH, HEIGHT)
   conectaTec.play()
 
+player_starts = False
+
 if __name__ == '__main__':
   ConectaTecMiniMax.hist = eval(open('scores.txt', 'r').read())
+  ps = input("PC starts? [Y/n]\n")
+  player_starts = (ps != "n")
+
   main()
   #target = open('scores6.txt', 'a')
   #target.write(str(ConectaTecMiniMax.hist))
