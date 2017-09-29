@@ -298,10 +298,19 @@ class ConectaTecBoard:
         if t < 0:
           t = 0
         scoreSE += t
+
     score = scoreN + scoreS + scoreE + scoreW + scoreNW + scoreNE + scoreSW + scoreSE
     #self.printGame()
     #print("Score: " + str(score))
     return score
+
+  def countChecks(self):
+    count = 0;
+    for x in range(0,7):
+      for y in range (0,6):
+        if self.board[x][y] != 0:
+          count += 1
+    return count
 
   def isTie(self):
     for col in self.board:

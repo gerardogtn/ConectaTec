@@ -42,11 +42,11 @@ class MiConectaTec(ConectaTec):
     ConectaTec.__init__(self, width, height)
 
   def getPlayerOne(self, id):
-    return MiniMaxPlayer(id, self.width, self.height, 6)
-    #return ConsolePlayer(id)
+    return MiniMaxPlayer(id, self.width, self.height, 4)
+    return ConsolePlayer(id)
 
   def getPlayerTwo(self, id):
-    #return MiniMaxPlayer(id, self.width, self.height, 6)
+    return MiniMaxPlayer(id, self.width, self.height, 6)
     return ConsolePlayer(id)
 
 def main():
@@ -57,4 +57,7 @@ def main():
   conectaTec.play()
 
 if __name__ == '__main__':
+  ConectaTecMiniMax.hist = eval(open('scores.txt', 'r').read())
   main()
+  #target = open('scores.txt', 'a')
+  #target.write(str(ConectaTecMiniMax.hist))

@@ -1,11 +1,26 @@
 from gamestate import GameState
 
 class BoundedMiniMax:
-
   def __init__(self, depth, id, opponent):
     self.MAX_DEPTH = depth
     self.id = id
     self.opponent = opponent
+
+  def successorsScores22(self, state, currentDepth, isMinimizer):
+    """ Returns the score of each state in states.
+
+    The 'score' is the result of evaluate() in each state.
+    """
+    scores = []
+    for _, next in state.getActionSuccessors(self.id if not isMinimizer else self.opponent):
+      boardStr = str(self.id) + str('1' if isMinimizer else '0') + next.board.toString()
+      if boardStr in BoundedMiniMax.hist:
+        scores.append(BoundedMiniMax.hist[boardStr])
+      else:
+        val = self.minimax(next, currentDepth + 1, not isMinimizer)
+        #BoundedMiniMax.hist[boardStr] = val
+        scores.append(val)
+    return scores
 
   def successorsScores(self, state, currentDepth, isMinimizer):
     """ Returns the score of each state in states.
@@ -14,7 +29,9 @@ class BoundedMiniMax:
     """
     scores = []
     for _, next in state.getActionSuccessors(self.id if not isMinimizer else self.opponent):
-      scores.append(self.minimax(next, currentDepth + 1, not isMinimizer))
+        scores.append(self.minimax(next, currentDepth + 1, not isMinimizer))
+        #boardStr = str(self.id) + str('1' if isMinimizer else '0') + next.board.toString()
+        #BoundedMiniMax.hist[boardStr] = scores[-1]
     return scores
 
   def minimax(self, state, currentDepth, isMinimizer):
@@ -40,9 +57,11 @@ class BoundedMiniMax:
       # Since the opponent is the minimizer, and we are making one move already
       # minmax should be called assuming that is the opponents (minimizer) turn.
       score = self.minimax(state, 1, True)
+      print(score, end=" ")
       if (score > nextScore):
         nextScore = score
         nextAction = action
+    print("")
     return nextAction
 
   def evaluate(self, state, depth):
@@ -55,8 +74,8 @@ class ConectaTecMiniMax(BoundedMiniMax):
     self.id = id
     self.opponent = opponent
 
-  def evaluate(self, state, depth):
-    boardStr = state.board.toString()
+  def evaluate2(self, state, depth):
+    boardStr = str(self.id) + state.board.toString()
     #print(boardStr)
     if boardStr in ConectaTecMiniMax.hist:
       #print("Recovered")
@@ -65,18 +84,40 @@ class ConectaTecMiniMax(BoundedMiniMax):
       #print("Calculated")
       total = 0
       if (state.board.won(self.id)):
-        total += 100 - depth
+        total += 1000 - depth
       elif (state.board.won(self.opponent)):
-        total += -100 + depth
-      total += state.board.score(depth, self.id, self.opponent)
+        total += -1000 + depth
+      else:
+        total += state.board.score(depth, self.id, self.opponent)
       ConectaTecMiniMax.hist[boardStr] = total
       return total
 
-  def evaluate2(self, state, depth):
-    total = 0
+  def evaluate(self, state, depth):
+    boardStr = str(self.id) + state.board.toString()
+    if boardStr in ConectaTecMiniMax.hist:
+      #print("Recovered")
+      return ConectaTecMiniMax.hist[boardStr]
+    else:
+      total = - state.board.countChecks()*100
+      if (state.board.won(self.id)):
+        #total += 1000 - depth
+        total += 10000 + state.board.score(depth, self.id, self.opponent)
+      elif (state.board.won(self.opponent)):
+        #total += -1000 + depth
+        total += -10000 + state.board.countChecks()*200
+      else:
+        total += state.board.score(depth, self.id, self.opponent)
+      ConectaTecMiniMax.hist[boardStr] = total
+      return total
+
+  def evaluate3(self, state, depth):
+    total = - state.board.countChecks()*100
     if (state.board.won(self.id)):
-      total += 100 - depth
+      #total += 1000 - depth
+      total += 10000 + state.board.score(depth, self.id, self.opponent)
     elif (state.board.won(self.opponent)):
-      total += -100 + depth
-    total += state.board.score(depth, self.id, self.opponent)
+      #total += -1000 + depth
+      total += -10000 + state.board.countChecks()*200
+    else:
+      total += state.board.score(depth, self.id, self.opponent)
     return total
